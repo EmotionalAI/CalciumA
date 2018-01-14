@@ -5,12 +5,13 @@ Created on Wed Jan  3 22:34:46 2018
 @author: Krzywy
 """
 
-#auROC 
+#This code will plot ROC curve for two different behaviours comparing distributions of their fluorescence 
+#to estimate if neuron can discriminate between them. also calculates auROC.
 import numpy as np
 import pandas as pd
 Final = pd.read_csv('Vmh4SF23beh1.csv', delimiter=';')
 Beh = Final.loc[Final['Beh'] == 'Stretch']
-nBeh = Final.loc[Final['Beh'] != 'Stretch']
+nBeh = Final.loc[Final['Beh'] == 'Cornering']
 
 
 import matplotlib.pyplot as plt
@@ -24,11 +25,12 @@ nBeh['Mean(2)'].plot(kind='hist', bins=30, alpha=0.5, color='b', ax=ax[0])
 Beh['Mean(2)'].plot(kind='hist', bins=30, alpha=0.1, color='g', cumulative=True, normed=True, ax=ax[1])
 nBeh['Mean(2)'].plot(kind='hist', bins=30, alpha=0.5, color='b', cumulative=True, normed=True, ax=ax[1])
 
-Final.loc[Final['Beh'] != 'Stretch', 'Beh'] = 0
-Final.loc[Final['Beh'] == 'Stretch', 'Beh'] = 1
+nBeh.loc[nBeh['Beh'] == 'Cornering', 'Beh'] = 0
+Beh.loc[Beh['Beh'] == 'Stretch', 'Beh'] = 1
+toconcat = [Beh, nBeh]
+Fin = pd.concat(toconcat)
         
-#example code of plotting roc and calculatin auROC
-#==============================================================================
+#Plotting ROC and calculating auROC
 from sklearn import metrics
 plt.figure(0).clf()
 
@@ -43,20 +45,4 @@ auc = metrics.roc_auc_score(label, pred)
 plt.plot(fpr,tpr,label="Neuron, auc="+str(auc))
 
 plt.legend(loc=0)
-#==============================================================================
-# second method if i calculate stuff myself
 
-#==============================================================================
-# import matplotlib.pyplot as plt
-# import numpy as np
-# 
-# x = # false_positive_rate
-# y = # true_positive_rate 
-# 
-# # This is the ROC curve
-# plt.plot(x,y)
-# plt.show() 
-# 
-# # This is the AUC
-# auc = np.trapz(y,x)
-#==============================================================================
