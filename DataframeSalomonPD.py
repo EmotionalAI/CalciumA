@@ -7,7 +7,8 @@ Created on Thu Sep 26 01:51:12 2019
 import numpy as np
 import pandas as pd
 
-#Merges Calcium traces with Behavoural scoring creating one dataframe
+#Merges Calcium traces (ImageJ) with Behavoural scoring (SalomonCoder open software) creating one dataframe 
+#SalomonCoder software: https://solomon.andraspeter.com/
 
 #takes ImageJ output, filters and convert it to deltaF/F format
 rawIJ = pd.read_csv('Path/to/Calcium/trace/file.csv', delimiter=',', header=0)
